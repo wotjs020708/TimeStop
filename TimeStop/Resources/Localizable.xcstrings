@@ -69,7 +69,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TimeStop"
+            "value" : "ZeroGap"
           }
         },
         "ko" : {
@@ -324,13 +324,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to TimeStop"
+            "value" : "Welcome to ZeroGap"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TimeStop에 오신 것을 환영합니다"
+            "value" : "ZeroGap에 오신 것을 환영합니다"
           }
         }
       }
