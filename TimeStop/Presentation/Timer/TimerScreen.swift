@@ -42,14 +42,15 @@ struct TimerScreen: View {
                         .opacity(max(0, 1.0 - (viewModel.state.elapsedTime / 0.3)))
                         .animation(.easeOut(duration: 0.1), value: viewModel.state.elapsedTime)
                 } else if viewModel.state.timerState == .stopped {
-                    // Recording complete state
+                    // Recording complete state - show the ACTUAL saved time from the last attempt
+                    let lastAttemptTime = viewModel.state.attempts.last?.actualSeconds ?? viewModel.state.elapsedTime
                     VStack(spacing: 24) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 64))
                             .foregroundStyle(.green)
 
                         VStack(spacing: 6) {
-                            Text(formatTime(viewModel.state.elapsedTime))
+                            Text(formatTime(lastAttemptTime))
                                 .font(.system(size: 50, weight: .bold, design: .rounded))
                                 .foregroundStyle(.primary)
                                 .monospacedDigit()

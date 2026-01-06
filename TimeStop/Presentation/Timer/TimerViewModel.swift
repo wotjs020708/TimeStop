@@ -28,6 +28,7 @@ struct TimerViewState: ViewState {
     var targetSeconds: Int
     var timerState: TimerState = .ready
     var elapsedTime: TimeInterval = 0
+    var lastDisplayedTime: TimeInterval = 0  // The exact time shown on screen when stopped
     var attempts: [Attempt] = []
     var finishPressProgress: Double = 0
 }
@@ -76,7 +77,10 @@ final class TimerViewModel: ViewModel<TimerViewState, TimerIntent, TimerSideEffe
     private func startTimer() {
         updateState { $0.timerState = .running }
         startTime = Date()
-        updateState { $0.elapsedTime = 0 }
+        updateState { state in
+            state.elapsedTime = 0
+            state.lastDisplayedTime = 0
+        }
 
         timerTask?.cancel()
         timerTask = Task {
@@ -87,11 +91,13 @@ final class TimerViewModel: ViewModel<TimerViewState, TimerIntent, TimerSideEffe
                 let elapsed = Date().timeIntervalSince(startTime)
                 updateState { state in
                     state.elapsedTime = elapsed
+                    state.lastDisplayedTime = elapsed  // Save exact displayed time
                 }
 
                 // Auto-stop if elapsed time exceeds target by 3 seconds
                 if elapsed > Double(state.targetSeconds) + 3.0 {
-                    stopTimer()
+                    // For auto-stop, use the current elapsed time
+                    autoStopTimer(at: elapsed)
                     return
                 }
             }
@@ -100,12 +106,36 @@ final class TimerViewModel: ViewModel<TimerViewState, TimerIntent, TimerSideEffe
 
     private func stopTimer() {
         timerTask?.cancel()
-        updateState { $0.timerState = .stopped }
+
+        // Use lastDisplayedTime - this is the EXACT time that was shown on screen
+        let finalTime = state.lastDisplayedTime
+
+        updateState { state in
+            state.elapsedTime = finalTime  // Keep display consistent
+            state.timerState = .stopped
+        }
 
         let attempt = Attempt(
             id: UUID(),
             targetSeconds: state.targetSeconds,
-            actualSeconds: state.elapsedTime
+            actualSeconds: finalTime
+        )
+        updateState { $0.attempts.append(attempt) }
+    }
+
+    private func autoStopTimer(at elapsed: TimeInterval) {
+        timerTask?.cancel()
+
+        updateState { state in
+            state.elapsedTime = elapsed
+            state.lastDisplayedTime = elapsed
+            state.timerState = .stopped
+        }
+
+        let attempt = Attempt(
+            id: UUID(),
+            targetSeconds: state.targetSeconds,
+            actualSeconds: elapsed
         )
         updateState { $0.attempts.append(attempt) }
     }

@@ -38,7 +38,9 @@ struct HistoryScreen: View {
     private var sessionListView: some View {
         List {
             ForEach(historyManager.sessions) { session in
-                SessionRowView(session: session)
+                NavigationLink(destination: HistoryDetailScreen(session: session)) {
+                    SessionRowView(session: session)
+                }
             }
             .onDelete(perform: deleteSession)
         }
