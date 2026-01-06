@@ -69,12 +69,14 @@ struct TimerTabView: View {
                         navigationPath.append(.results(targetSeconds: targetSeconds, attempts: attempts))
                     }
                     .navigationBarBackButtonHidden(true)
+                    .toolbar(.hidden, for: .tabBar)
 
                 case .results(let targetSeconds, let attempts):
                     ResultsScreen(targetSeconds: targetSeconds, attempts: attempts) {
                         navigationPath = []
                     }
                     .navigationBarBackButtonHidden(true)
+                    .toolbar(.hidden, for: .tabBar)
                 }
             }
         }

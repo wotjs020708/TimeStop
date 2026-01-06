@@ -112,16 +112,16 @@ struct ResultsScreen: View {
                 }
             }
 
-            // Try again button
+            // Go home button
             Button {
                 let impact = UIImpactFeedbackGenerator(style: .medium)
                 impact.impactOccurred()
                 viewModel.send(.tryAgainTapped)
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "arrow.clockwise")
+                    Image(systemName: "house.fill")
                         .font(.title3)
-                    Text("try_again")
+                    Text("go_home")
                         .font(.headline)
                 }
                 .foregroundStyle(.white)
