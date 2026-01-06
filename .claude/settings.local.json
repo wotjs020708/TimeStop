@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodebuild:*)",
+      "Bash(plutil:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}

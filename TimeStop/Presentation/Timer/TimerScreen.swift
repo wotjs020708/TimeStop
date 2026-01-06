@@ -1,0 +1,187 @@
+//
+//  TimerScreen.swift
+//  TimeStop
+//
+//  Created by Claude on 1/6/26.
+//
+
+import SwiftUI
+
+struct TimerScreen: View {
+    @StateObject private var viewModel: TimerViewModel
+    let onFinish: (Int, [Attempt]) -> Void
+
+    init(targetSeconds: Int, onFinish: @escaping (Int, [Attempt]) -> Void) {
+        self._viewModel = StateObject(wrappedValue: TimerViewModel(targetSeconds: targetSeconds))
+        self.onFinish = onFinish
+    }
+
+    // Current attempt index for color selection
+    private var currentAttemptIndex: Int {
+        viewModel.state.attempts.count
+    }
+
+    var body: some View {
+        ZStack {
+            // Solid color background when timer is running - immediate, no transition
+            if viewModel.state.timerState == .running {
+                AttemptColors.color(for: currentAttemptIndex)
+                    .ignoresSafeArea()
+            }
+            // Main content
+            VStack(spacing: 32) {
+                Spacer()
+
+                // Timer display - visible briefly at start then fades out
+                if viewModel.state.timerState == .running && viewModel.state.elapsedTime < 0.5 {
+                    Text(formatTime(viewModel.state.elapsedTime))
+                        .font(.system(size: 60, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                        .monospacedDigit()
+                        .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
+                        .opacity(max(0, 1.0 - (viewModel.state.elapsedTime / 0.3)))
+                        .animation(.easeOut(duration: 0.1), value: viewModel.state.elapsedTime)
+                } else if viewModel.state.timerState == .stopped {
+                    // Recording complete state
+                    VStack(spacing: 24) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 64))
+                            .foregroundStyle(.green)
+
+                        VStack(spacing: 6) {
+                            Text(formatTime(viewModel.state.elapsedTime))
+                                .font(.system(size: 50, weight: .bold, design: .rounded))
+                                .foregroundStyle(.primary)
+                                .monospacedDigit()
+
+                            Text("seconds")
+                                .font(.title3)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                } else if viewModel.state.timerState == .ready {
+                    // Ready state - show icon
+                    VStack(spacing: 16) {
+                        Image(systemName: "hand.tap.fill")
+                            .font(.system(size: 60))
+                            .foregroundStyle(.primary)
+
+                        Text("start")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                    }
+                }
+
+                Spacer()
+
+                // Bottom buttons
+                if viewModel.state.timerState == .stopped {
+                    VStack(spacing: 12) {
+                        // Continue button
+                        Button {
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            viewModel.send(.continueTapped)
+                        } label: {
+                            HStack(spacing: 12) {
+                                Image(systemName: "arrow.clockwise")
+                                    .font(.title3)
+                                Text("continue")
+                                    .font(.headline)
+                            }
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .fill(Color.primary)
+                            )
+                        }
+
+                        // Finish button with long press - RED color
+                        Button {} label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(Color.red.opacity(0.6), lineWidth: 2)
+
+                                // Progress fill - red
+                                GeometryReader { geometry in
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .fill(Color.red.opacity(0.3))
+                                        .frame(width: geometry.size.width * viewModel.state.finishPressProgress)
+                                        .animation(.linear(duration: 0.05), value: viewModel.state.finishPressProgress)
+                                }
+
+                                HStack(spacing: 12) {
+                                    Image(systemName: "stop.circle.fill")
+                                        .font(.title3)
+                                    Text("hold_to_finish")
+                                        .font(.subheadline)
+                                }
+                                .foregroundStyle(.red)
+                                .padding(.vertical, 16)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                        }
+                        .simultaneousGesture(
+                            LongPressGesture(minimumDuration: 1.5)
+                                .onChanged { _ in
+                                    // Haptic when starting long press
+                                    let impact = UIImpactFeedbackGenerator(style: .medium)
+                                    impact.impactOccurred()
+                                    viewModel.send(.finishPressed)
+                                }
+                                .onEnded { _ in
+                                    // Will be handled by side effect
+                                }
+                        )
+                        .simultaneousGesture(
+                            DragGesture(minimumDistance: 0)
+                                .onEnded { _ in
+                                    viewModel.send(.finishReleased)
+                                }
+                        )
+                        .highPriorityGesture(
+                            TapGesture()
+                                .onEnded { _ in
+                                    // Light haptic on tap
+                                    let impact = UIImpactFeedbackGenerator(style: .light)
+                                    impact.impactOccurred()
+                                }
+                        )
+                    }
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 32)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            let impact = UIImpactFeedbackGenerator(style: .heavy)
+            impact.impactOccurred()
+
+            if viewModel.state.timerState == .ready {
+                viewModel.send(.startTapped)
+            } else if viewModel.state.timerState == .running {
+                viewModel.send(.stopTapped)
+            }
+        }
+        .preferredColorScheme(viewModel.state.timerState == .running ? .dark : nil)
+        .onReceive(viewModel.sideEffect) { effect in
+            switch effect {
+            case .navigateToResults(let targetSeconds, let attempts):
+                onFinish(targetSeconds, attempts)
+            }
+        }
+    }
+
+    // Format time with milliseconds (e.g., "10.345")
+    private func formatTime(_ time: TimeInterval) -> String {
+        String(format: "%.3f", time)
+    }
+}
+
+#Preview {
+    TimerScreen(targetSeconds: 10, onFinish: { _, _ in })
+}
