@@ -1,16 +1,16 @@
-# Privacy Policy for ZeroGap
+# Privacy Policy for TimeSense
 
 **Last Updated: January 6, 2026**
 
 ## Introduction
 
-ZeroGap ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our mobile application ZeroGap (the "App").
+TimeSense ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our mobile application TimeSense (the "App").
 
 ## Information We Collect
 
 **We do not collect any personal information.**
 
-ZeroGap is designed with privacy in mind:
+TimeSense is designed with privacy in mind:
 - No account registration required
 - No personal data collected
 - No analytics or tracking
@@ -25,7 +25,7 @@ All game data (session history, attempts, scores) is stored **locally on your de
 
 ## Third-Party Services
 
-ZeroGap does not use any third-party services, SDKs, or analytics tools.
+TimeSense does not use any third-party services, SDKs, or analytics tools.
 
 ## Children's Privacy
 
@@ -43,19 +43,19 @@ If you have questions about this Privacy Policy, please contact us at:
 
 ---
 
-# 개인정보 처리방침 - ZeroGap
+# 개인정보 처리방침 - TimeSense
 
 **최종 업데이트: 2026년 1월 6일**
 
 ## 소개
 
-ZeroGap("우리," "저희," 또는 "당사")은 귀하의 개인정보 보호를 위해 최선을 다하고 있습니다. 이 개인정보 처리방침은 모바일 애플리케이션 ZeroGap("앱")을 사용할 때 정보를 어떻게 처리하는지 설명합니다.
+TimeSense("우리," "저희," 또는 "당사")은 귀하의 개인정보 보호를 위해 최선을 다하고 있습니다. 이 개인정보 처리방침은 모바일 애플리케이션 TimeSense("앱")을 사용할 때 정보를 어떻게 처리하는지 설명합니다.
 
 ## 수집하는 정보
 
 **당사는 개인정보를 수집하지 않습니다.**
 
-ZeroGap은 개인정보 보호를 염두에 두고 설계되었습니다:
+TimeSense은 개인정보 보호를 염두에 두고 설계되었습니다:
 - 계정 등록 불필요
 - 개인 데이터 수집 없음
 - 분석 또는 추적 없음
@@ -70,7 +70,7 @@ ZeroGap은 개인정보 보호를 염두에 두고 설계되었습니다:
 
 ## 제3자 서비스
 
-ZeroGap은 제3자 서비스, SDK 또는 분석 도구를 사용하지 않습니다.
+TimeSense은 제3자 서비스, SDK 또는 분석 도구를 사용하지 않습니다.
 
 ## 아동 개인정보 보호
 
