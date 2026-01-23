@@ -125,7 +125,7 @@ struct ResultsScreen: View {
                     Text("go_home")
                         .font(.headline)
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(colorScheme == .dark ? .black : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(

@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingScreen: View {
     @StateObject private var viewModel = OnboardingViewModel()
     let onGetStarted: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(spacing: 24) {
@@ -52,7 +53,7 @@ struct OnboardingScreen: View {
                     Text("get_started")
                         .font(.headline)
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(colorScheme == .dark ? .black : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(

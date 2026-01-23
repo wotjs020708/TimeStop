@@ -175,7 +175,7 @@ struct TimerScreen: View {
                                 Text("continue")
                                     .font(.headline)
                             }
-                            .foregroundStyle(.white)
+                            .foregroundStyle(colorScheme == .dark ? .black : .white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
                             .background(
