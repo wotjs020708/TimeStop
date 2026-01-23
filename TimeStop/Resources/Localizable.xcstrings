@@ -437,6 +437,23 @@
         }
       }
     },
+    "tap_to_stop" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to stop"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면을 터치해서 멈추세요"
+          }
+        }
+      }
+    },
     "target_time" : {
       "extractionState" : "manual",
       "localizations" : {
