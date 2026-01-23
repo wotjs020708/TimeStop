@@ -11,9 +11,37 @@ struct TimerScreen: View {
     @StateObject private var viewModel: TimerViewModel
     let onFinish: (Int, [Attempt]) -> Void
 
+    @State private var isBlinking = false
+    @State private var shimmerOffset: CGFloat = -1.0
+    @State private var shimmerTimer: Timer?
+
     init(targetSeconds: Int, onFinish: @escaping (Int, [Attempt]) -> Void) {
         self._viewModel = StateObject(wrappedValue: TimerViewModel(targetSeconds: targetSeconds))
         self.onFinish = onFinish
+    }
+    
+    // Schedule next shimmer with random interval (0.8s ~ 2.5s)
+    private func scheduleRandomShimmer() {
+        let randomDelay = Double.random(in: 0.8...2.5)
+        shimmerTimer?.invalidate()
+        shimmerTimer = Timer.scheduledTimer(withTimeInterval: randomDelay, repeats: false) { _ in
+            withAnimation(.easeInOut(duration: 0.6)) {
+                shimmerOffset = 2.0
+            }
+            // Reset after animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                shimmerOffset = -1.0
+                if viewModel.state.timerState == .ready {
+                    scheduleRandomShimmer()
+                }
+            }
+        }
+    }
+    
+    private func stopShimmer() {
+        shimmerTimer?.invalidate()
+        shimmerTimer = nil
+        shimmerOffset = -1.0
     }
 
     // Current attempt index for color selection
@@ -32,7 +60,7 @@ struct TimerScreen: View {
             VStack(spacing: 32) {
                 Spacer()
 
-                // Timer display - visible briefly at start then fades out
+                // Timer display - visible briefly at start then fades out, then show blinking STOP instruction
                 if viewModel.state.timerState == .running && viewModel.state.elapsedTime < 0.5 {
                     Text(formatTime(viewModel.state.elapsedTime))
                         .font(.system(size: 60, weight: .bold, design: .rounded))
@@ -41,6 +69,27 @@ struct TimerScreen: View {
                         .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                         .opacity(max(0, 1.0 - (viewModel.state.elapsedTime / 0.3)))
                         .animation(.easeOut(duration: 0.1), value: viewModel.state.elapsedTime)
+                } else if viewModel.state.timerState == .running && viewModel.state.elapsedTime >= 0.5 {
+                    // Blinking STOP instruction after initial fade
+                    VStack(spacing: 16) {
+                        Image(systemName: "hand.tap.fill")
+                            .font(.system(size: 56))
+                            .foregroundStyle(.white)
+
+                        Text("stop")
+                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+
+                        Text("tap_to_stop")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.white.opacity(0.9))
+                    }
+                    .opacity(isBlinking ? 0.3 : 1.0)
+                    .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: isBlinking)
+                    .onAppear {
+                        isBlinking = true
+                    }
                 } else if viewModel.state.timerState == .stopped {
                     // Recording complete state - show the ACTUAL saved time from the last attempt
                     let lastAttemptTime = viewModel.state.attempts.last?.actualSeconds ?? viewModel.state.elapsedTime
@@ -60,8 +109,11 @@ struct TimerScreen: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
+                    .onAppear {
+                        isBlinking = false
+                    }
                 } else if viewModel.state.timerState == .ready {
-                    // Ready state - show icon
+                    // Ready state - show icon with skeleton shimmer effect
                     VStack(spacing: 16) {
                         Image(systemName: "hand.tap.fill")
                             .font(.system(size: 60))
@@ -70,6 +122,38 @@ struct TimerScreen: View {
                         Text("start")
                             .font(.title2)
                             .fontWeight(.semibold)
+                    }
+                    .overlay(
+                        GeometryReader { geometry in
+                            LinearGradient(
+                                colors: [
+                                    .clear,
+                                    .white.opacity(0.4),
+                                    .clear
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                            .frame(width: geometry.size.width * 0.6)
+                            .offset(x: geometry.size.width * shimmerOffset)
+                            .blur(radius: 3)
+                        }
+                        .mask(
+                            VStack(spacing: 16) {
+                                Image(systemName: "hand.tap.fill")
+                                    .font(.system(size: 60))
+                                Text("start")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                            }
+                        )
+                    )
+                    .onAppear {
+                        isBlinking = false
+                        scheduleRandomShimmer()
+                    }
+                    .onDisappear {
+                        stopShimmer()
                     }
                 }
 
@@ -168,7 +252,6 @@ struct TimerScreen: View {
                 viewModel.send(.stopTapped)
             }
         }
-        .preferredColorScheme(viewModel.state.timerState == .running ? .dark : nil)
         .onReceive(viewModel.sideEffect) { effect in
             switch effect {
             case .navigateToResults(let targetSeconds, let attempts):
