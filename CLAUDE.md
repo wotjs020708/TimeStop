@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-TimeStop is a SwiftUI-based iOS application built with Xcode using **The Composable Architecture (TCA)**. The project targets iOS devices (iPhone and iPad) and uses Swift 5.0. This is a **global service** with localization support.
+TimeSense (formerly TimeStop) is a SwiftUI-based iOS timer game built with Xcode using **MVI (Model-View-Intent)** architecture. The project targets iPhone devices and uses Swift 5.0 with localization support for English and Korean.
 
 - **Bundle ID**: com.jaesuneo.TimeStop
-- **Target Devices**: iPhone and iPad (TARGETED_DEVICE_FAMILY: 1,2)
+- **Target Devices**: iPhone (TARGETED_DEVICE_FAMILY: 1)
 - **iOS Deployment Target**: iOS 17.0+
 - **Minimum Supported Device**: iPhone 13 mini (5.4", 2340x1080)
 - **Marketing Version**: 1.0
-- **Architecture**: TCA (The Composable Architecture)
-- **UI Guidelines**: Apple Human Interface Guidelines (HIG)
-- **Localization**: Multi-language support for global audience
+- **Architecture**: Custom MVI with Combine
+- **UI Framework**: SwiftUI following Apple HIG
+- **Localization**: English and Korean (.xcstrings catalog)
 
 ## Build Commands
 
@@ -32,7 +32,7 @@ xcodebuild -project TimeStop.xcodeproj -scheme TimeStop -configuration Release b
 xcodebuild -project TimeStop.xcodeproj -scheme TimeStop clean
 ```
 
-### Running tests
+### Running tests (if added)
 ```bash
 xcodebuild test -project TimeStop.xcodeproj -scheme TimeStop -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
 ```
@@ -42,89 +42,144 @@ xcodebuild test -project TimeStop.xcodeproj -scheme TimeStop -destination 'platf
 ```
 TimeStop/
 ├── TimeStopApp.swift       # App entry point (@main)
-├── Features/               # Feature modules (TCA reducers, actions, states)
-├── Views/                  # SwiftUI views following HIG
-├── Resources/              # Localizable strings and assets
-└── Assets.xcassets/        # App assets (icons, colors)
+├── ContentView.swift       # Root view with navigation & tabs
+├── Core/                   # Shared utilities and protocols
+│   ├── MVIProtocols.swift      # Base MVI architecture
+│   ├── AttemptColors.swift     # Color palette for attempts
+│   └── HistoryManager.swift    # UserDefaults persistence
+├── Presentation/           # Screen modules (View + ViewModel pairs)
+│   ├── Onboarding/
+│   ├── TimeInput/
+│   ├── Timer/
+│   ├── Results/
+│   └── History/
+└── Resources/
+    └── Localizable.xcstrings   # String catalog (EN/KO)
 ```
 
-## Architecture: The Composable Architecture (TCA)
+## Architecture: MVI (Model-View-Intent)
 
-### Core TCA Concepts
+This project uses a **custom MVI architecture** with Combine, defined in `Core/MVIProtocols.swift`.
 
-**Features** are organized using TCA's pattern:
-- **State**: Struct containing all feature state
-- **Action**: Enum defining all possible actions
-- **Reducer**: Pure function that evolves state based on actions
-- **Environment/Dependencies**: External dependencies injected for testability
+### Core MVI Pattern
 
-### Feature Module Structure
+Each feature follows a consistent pattern with three components:
 
-Each feature should follow this structure:
+**1. State** - Immutable struct representing UI state:
 ```swift
-import ComposableArchitecture
+struct FeatureViewState: ViewState {
+    var property: Type
+    // All mutable state lives here
+}
+```
 
-@Reducer
-struct FeatureName {
-    @ObservableState
-    struct State: Equatable {
-        // Feature state properties
-    }
+**2. Intent** - Enum defining all user actions:
+```swift
+enum FeatureIntent: ViewIntent {
+    case userTappedButton
+    case valueChanged(String)
+}
+```
 
-    enum Action {
-        // User actions, delegate actions, internal actions
-    }
-
-    var body: some ReducerOf<Self> {
-        Reduce { state, action in
-            // State mutations and effects
+**3. ViewModel** - Manages state and handles intents:
+```swift
+@MainActor
+final class FeatureViewModel: ViewModel<FeatureViewState, FeatureIntent, FeatureSideEffect> {
+    override func send(_ intent: FeatureIntent) {
+        switch intent {
+        case .userTappedButton:
+            updateState { $0.property = newValue }
         }
     }
 }
 ```
 
-### View Integration
-
-Views should use `WithViewStore` or `@Perception.Bindable` to observe state:
+**4. SideEffect (optional)** - Navigation or one-time events:
 ```swift
-struct FeatureView: View {
-    let store: StoreOf<Feature>
-
-    var body: some View {
-        // SwiftUI view following HIG
-    }
+enum FeatureSideEffect: ViewSideEffect {
+    case navigateToNextScreen
 }
 ```
 
+### Key MVI Concepts
+
+- **Unidirectional data flow**: View → Intent → ViewModel → State → View
+- **State immutability**: Use `updateState { }` to modify state
+- **MainActor isolation**: All ViewModels are @MainActor for thread safety
+- **Side effects**: Use `emitSideEffect()` for navigation/alerts, observe via Combine
+- **Published state**: ViewModels use `@Published private(set) var state` for reactive updates
+
+### Example: Timer Feature
+
+See `Presentation/Timer/` for a complete MVI implementation:
+- `TimerViewState`: Tracks timer state, elapsed time, attempts
+- `TimerIntent`: User actions (start, stop, finish)
+- `TimerSideEffect`: Navigation to results screen
+- `TimerViewModel`: Manages timer Task, state updates, and side effects
+- `TimerScreen`: SwiftUI view observing ViewModel
+
+## Navigation Architecture
+
+The app uses **SwiftUI NavigationStack** with enum-based routing:
+
+```swift
+enum Screen: Hashable {
+    case onboarding
+    case timeInput
+    case timer(targetSeconds: Int)
+    case results(targetSeconds: Int, attempts: [Attempt])
+}
+```
+
+- **Root**: `ContentView` → TabView (Timer flow + History)
+- **Timer flow**: NavigationStack with `[Screen]` path
+- **Navigation pattern**: Screens append to path, results pop to root
+- **Tab hiding**: `.toolbar(.hidden, for: .tabBar)` during timer/results
+
+## Data Persistence
+
+**HistoryManager** (singleton) manages session history:
+- **Storage**: UserDefaults with JSON encoding
+- **Model**: `TimerSession` contains target, attempts, timestamp
+- **Operations**: `addSession()`, `deleteSession()`, `clearAllSessions()`
+- **Usage**: Automatically persists after each session completion
+
 ## UI Guidelines
 
-- **Follow Apple HIG**: Use native iOS components, spacing, and patterns
-- **System Colors**: Prefer semantic colors (`.primary`, `.secondary`, `.accentColor`)
-- **Typography**: Use standard text styles (`.title`, `.headline`, `.body`, `.caption`)
-- **Navigation**: Use SwiftUI navigation patterns (NavigationStack, sheets, alerts)
-- **Accessibility**: Ensure VoiceOver support, Dynamic Type compatibility
-- **SF Symbols**: Use SF Symbols for icons
-- **Screen Size**: All UI must be optimized for iPhone 13 mini (375pt width)
-  - Use compact spacing and padding (16-24pt horizontal, 20-32pt vertical)
-  - Scale down font sizes appropriately (max 64pt for icons, 60pt for numbers)
-  - Ensure all content fits without excessive scrolling
+- **Apple HIG compliance**: Use native iOS components and patterns
+- **Color system**:
+  - Semantic colors (`.primary`, `.secondary`) for text - automatically adaptive
+  - `AttemptColors` palette (6 colors) for timer backgrounds - supports dark mode
+  - All screens use `@Environment(\.colorScheme)` to pass color scheme to AttemptColors
+- **Dark Mode Support**:
+  - Fully supports system dark mode (no forced color scheme)
+  - AttemptColors adapts brightness/saturation based on color scheme
+    - Light mode: brightness 0.8, saturation 0.7
+    - Dark mode: brightness 0.6, saturation 0.8
+  - Button text colors invert for proper contrast:
+    - Light mode: white text on dark background
+    - Dark mode: black text on light background
+- **Typography**: Standard text styles (`.title`, `.headline`, `.body`)
+- **SF Symbols**: For tab bar icons and UI elements
+- **Screen optimization**:
+  - Target: iPhone 13 mini (375pt width)
+  - Compact spacing: 16-24pt horizontal, 20-32pt vertical
+  - Max font sizes: 64pt icons, 60pt numbers
+  - Ensure content fits without excessive scrolling
 
 ## Localization
 
-- Use `LocalizedStringKey` for all user-facing strings
-- Strings should be added to `Localizable.strings` or `.xcstrings` catalog
-- Format: `Text("key_name")` - SwiftUI automatically looks up localized strings
-- Support RTL languages where applicable
-- Date/number formatting should respect locale
+- **String catalog**: `Resources/Localizable.xcstrings`
+- **Supported languages**: English (base), Korean
+- **Usage**: `Text("key_name")` - SwiftUI auto-localizes
+- **Format**: String catalog with automatic symbol generation enabled
+- **Number formatting**: Use `.formatted()` to respect locale
 
 ## Development Notes
 
-- **Testing**: TCA enables comprehensive unit testing of business logic without UI
-- **Dependencies**: Use TCA's dependency management system for testable code
-- **Effects**: All side effects (API calls, timers, etc.) should be modeled as Effect types
-- **Navigation**: Use TCA's navigation patterns (tree-based state, stack state)
-- **Swift Features**:
-  - Swift Approachable Concurrency enabled
-  - MainActor default isolation
-  - String catalog symbol generation enabled
-  - Member import visibility upcoming feature enabled
+- **Concurrency**: Swift async/await with Task-based timers
+- **Timer precision**: 10ms update interval (see `TimerViewModel`)
+- **Haptics**: `UINotificationFeedbackGenerator` for finish action
+- **State management**: Combine's `@Published` for reactive updates
+- **Memory management**: Cancel Tasks in `deinit` to prevent leaks
+- **Navigation state**: Stored in `@State private var navigationPath: [Screen]`
