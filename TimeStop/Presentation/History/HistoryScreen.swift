@@ -57,6 +57,7 @@ struct HistoryScreen: View {
 
 struct SessionRowView: View {
     let session: TimerSession
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -108,7 +109,7 @@ struct SessionRowView: View {
             HStack(spacing: 4) {
                 ForEach(Array(session.attempts.prefix(6).enumerated()), id: \.element.id) { index, _ in
                     Circle()
-                        .fill(AttemptColors.color(for: index))
+                        .fill(AttemptColors.color(for: index, colorScheme: colorScheme))
                         .frame(width: 12, height: 12)
                 }
                 if session.attempts.count > 6 {

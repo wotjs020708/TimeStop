@@ -10,6 +10,7 @@ import SwiftUI
 struct ResultsScreen: View {
     @StateObject private var viewModel: ResultsViewModel
     let onTryAgain: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
 
     init(targetSeconds: Int, attempts: [Attempt], onTryAgain: @escaping () -> Void) {
         self._viewModel = StateObject(wrappedValue: ResultsViewModel(targetSeconds: targetSeconds, attempts: attempts))
@@ -165,7 +166,7 @@ struct ResultsScreen: View {
     }
 
     private func attemptColor(for index: Int) -> Color {
-        AttemptColors.color(for: index)
+        AttemptColors.color(for: index, colorScheme: colorScheme)
     }
 
     private func attemptBackgroundColor(for index: Int, isBest: Bool) -> Color {
