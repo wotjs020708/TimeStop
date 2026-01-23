@@ -10,6 +10,7 @@ import SwiftUI
 struct TimeInputScreen: View {
     @StateObject private var viewModel = TimeInputViewModel()
     let onStart: (Int) -> Void
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(spacing: 40) {
@@ -72,7 +73,7 @@ struct TimeInputScreen: View {
                     Text("start")
                         .font(.headline)
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(colorScheme == .dark ? .black : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(

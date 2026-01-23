@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HistoryDetailScreen: View {
     let session: TimerSession
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         ScrollView {
@@ -132,14 +133,14 @@ struct HistoryDetailScreen: View {
         HStack {
             // Color indicator
             RoundedRectangle(cornerRadius: 3)
-                .fill(AttemptColors.color(for: index))
+                .fill(AttemptColors.color(for: index, colorScheme: colorScheme))
                 .frame(width: 6)
 
             // Attempt number
             Text("#\(index + 1)")
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundStyle(AttemptColors.color(for: index))
+                .foregroundStyle(AttemptColors.color(for: index, colorScheme: colorScheme))
                 .frame(width: 40, alignment: .leading)
 
             Spacer()
@@ -172,11 +173,11 @@ struct HistoryDetailScreen: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(session.bestAttempt?.id == attempt.id
                       ? Color.yellow.opacity(0.1)
-                      : AttemptColors.color(for: index).opacity(0.1))
+                      : AttemptColors.color(for: index, colorScheme: colorScheme).opacity(0.1))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(AttemptColors.color(for: index).opacity(0.3), lineWidth: 1)
+                .stroke(AttemptColors.color(for: index, colorScheme: colorScheme).opacity(0.3), lineWidth: 1)
         )
     }
 

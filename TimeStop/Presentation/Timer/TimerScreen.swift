@@ -14,6 +14,7 @@ struct TimerScreen: View {
     @State private var isBlinking = false
     @State private var shimmerOffset: CGFloat = -1.0
     @State private var shimmerTimer: Timer?
+    @Environment(\.colorScheme) private var colorScheme
 
     init(targetSeconds: Int, onFinish: @escaping (Int, [Attempt]) -> Void) {
         self._viewModel = StateObject(wrappedValue: TimerViewModel(targetSeconds: targetSeconds))
@@ -53,7 +54,7 @@ struct TimerScreen: View {
         ZStack {
             // Solid color background when timer is running - immediate, no transition
             if viewModel.state.timerState == .running {
-                AttemptColors.color(for: currentAttemptIndex)
+                AttemptColors.color(for: currentAttemptIndex, colorScheme: colorScheme)
                     .ignoresSafeArea()
             }
             // Main content
@@ -174,7 +175,7 @@ struct TimerScreen: View {
                                 Text("continue")
                                     .font(.headline)
                             }
-                            .foregroundStyle(.white)
+                            .foregroundStyle(colorScheme == .dark ? .black : .white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
                             .background(
