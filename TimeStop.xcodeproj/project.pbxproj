@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		4BE641142F2F65B300B222B0 /* TimeStopWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 4BE6410A2F2F65B200B222B0 /* TimeStopWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5E8D4A2B2F31F5A000123456 /* Attempt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8D4A2A2F31F5A000123456 /* Attempt.swift */; };
-/* End PBXBuildFile section */
+5E8D4A2D2F31F5A000123458 /* HapticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8D4A2C2F31F5A000123457 /* HapticsProvider.swift */; };
+		5E8D4A2E2F31F5A000123459 /* HapticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8D4A2C2F31F5A000123457 /* HapticsProvider.swift */; };
+		/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		4BE641122F2F65B300B222B0 /* PBXContainerItemProxy */ = {
@@ -39,7 +41,8 @@
 		4BB21D6E2F0C9E5000F8B2AD /* TimeStop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeStop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BE6410A2F2F65B200B222B0 /* TimeStopWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TimeStopWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E8D4A2A2F31F5A000123456 /* Attempt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeStop/Core/Attempt.swift"; sourceTree = "<group>"; };
-/* End PBXFileReference section */
+5E8D4A2C2F31F5A000123457 /* HapticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeStop/Core/HapticsProvider.swift"; sourceTree = "<group>"; };
+		/* End PBXFileReference section */
 
 	/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		4BE6411E2F305B2E00B222B0 /* Exceptions for "TimeStop" folder in "TimeStopWatch Watch App" target */ = {
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E8D4A2B2F31F5A000123456 /* Attempt.swift in Sources */,
+				5E8D4A2D2F31F5A000123458 /* HapticsProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E8D4A2E2F31F5A000123459 /* HapticsProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
