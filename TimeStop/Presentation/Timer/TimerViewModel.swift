@@ -8,22 +8,6 @@
 import SwiftUI
 import Combine
 
-enum TimerState: Equatable {
-    case ready
-    case running
-    case stopped
-}
-
-struct Attempt: Equatable, Identifiable, Hashable {
-    let id: UUID
-    let targetSeconds: Int
-    let actualSeconds: Double
-
-    var difference: Double {
-        actualSeconds - Double(targetSeconds)
-    }
-}
-
 struct TimerViewState: ViewState {
     var targetSeconds: Int
     var timerState: TimerState = .ready
@@ -43,6 +27,7 @@ enum TimerIntent: ViewIntent {
 
 enum TimerSideEffect: ViewSideEffect {
     case navigateToResults(targetSeconds: Int, attempts: [Attempt])
+    case playHaptic(NotificationType)
 }
 
 @MainActor
@@ -177,8 +162,7 @@ final class TimerViewModel: ViewModel<TimerViewState, TimerIntent, TimerSideEffe
     }
 
     private func finishSession() {
-        let notification = UINotificationFeedbackGenerator()
-        notification.notificationOccurred(.success)
+        emitSideEffect(.playHaptic(.success))
 
         emitSideEffect(.navigateToResults(
             targetSeconds: state.targetSeconds,

@@ -165,8 +165,7 @@ struct TimerScreen: View {
                     VStack(spacing: 12) {
                         // Continue button
                         Button {
-                            let impact = UIImpactFeedbackGenerator(style: .medium)
-                            impact.impactOccurred()
+                            IOSHapticsProvider().impact(style: .medium)
                             viewModel.send(.continueTapped)
                         } label: {
                             HStack(spacing: 12) {
@@ -214,8 +213,7 @@ struct TimerScreen: View {
                             LongPressGesture(minimumDuration: 1.5)
                                 .onChanged { _ in
                                     // Haptic when starting long press
-                                    let impact = UIImpactFeedbackGenerator(style: .medium)
-                                    impact.impactOccurred()
+                                    IOSHapticsProvider().impact(style: .medium)
                                     viewModel.send(.finishPressed)
                                 }
                                 .onEnded { _ in
@@ -228,12 +226,11 @@ struct TimerScreen: View {
                                     viewModel.send(.finishReleased)
                                 }
                         )
-                        .highPriorityGesture(
-                            TapGesture()
-                                .onEnded { _ in
-                                    // Light haptic on tap
-                                    let impact = UIImpactFeedbackGenerator(style: .light)
-                                    impact.impactOccurred()
+                            .highPriorityGesture(
+                                TapGesture()
+                                    .onEnded { _ in
+                                        // Light haptic on tap
+                                        IOSHapticsProvider().impact(style: .light)
                                 }
                         )
                     }
@@ -244,8 +241,7 @@ struct TimerScreen: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            let impact = UIImpactFeedbackGenerator(style: .heavy)
-            impact.impactOccurred()
+            IOSHapticsProvider().impact(style: .heavy)
 
             if viewModel.state.timerState == .ready {
                 viewModel.send(.startTapped)
@@ -257,6 +253,9 @@ struct TimerScreen: View {
             switch effect {
             case .navigateToResults(let targetSeconds, let attempts):
                 onFinish(targetSeconds, attempts)
+            case .playHaptic(let type):
+                let provider = IOSHapticsProvider()
+                provider.notification(type: type)
             }
         }
     }

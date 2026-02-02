@@ -6,20 +6,79 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4BE641142F2F65B300B222B0 /* TimeStopWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 4BE6410A2F2F65B200B222B0 /* TimeStopWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5E8D4A2E2F31F5A000123459 /* HapticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8D4A2C2F31F5A000123457 /* HapticsProvider.swift */; };
+		/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4BE641122F2F65B300B222B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BB21D662F0C9E5000F8B2AD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BE641092F2F65B200B222B0;
+			remoteInfo = "TimeStopWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4BE641152F2F65B300B222B0 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				4BE641142F2F65B300B222B0 /* TimeStopWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		4BB21D6E2F0C9E5000F8B2AD /* TimeStop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeStop.app; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
+		4BE6410A2F2F65B200B222B0 /* TimeStopWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TimeStopWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E8D4A2C2F31F5A000123457 /* HapticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeStop/Core/HapticsProvider.swift"; sourceTree = "<group>"; };
+		/* End PBXFileReference section */
+
+	/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4BE6411E2F305B2E00B222B0 /* Exceptions for "TimeStop" folder in "TimeStopWatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Core/Attempt.swift,
+				Core/ConnectivityManager.swift,
+				Core/MVIProtocols.swift,
+				Presentation/Timer/TimerViewModel.swift,
+			);
+			target = 4BE641092F2F65B200B222B0 /* TimeStopWatch Watch App */;
+		};
+	/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4BB21D702F0C9E5000F8B2AD /* TimeStop */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4BE6411E2F305B2E00B222B0 /* Exceptions for "TimeStop" folder in "TimeStopWatch Watch App" target */,
+			);
 			path = TimeStop;
+			sourceTree = "<group>";
+		};
+		4BE6410B2F2F65B200B222B0 /* TimeStopWatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "TimeStopWatch Watch App";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4BB21D6B2F0C9E5000F8B2AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BE641072F2F65B200B222B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				4BB21D702F0C9E5000F8B2AD /* TimeStop */,
+				4BE6410B2F2F65B200B222B0 /* TimeStopWatch Watch App */,
 				4BB21D6F2F0C9E5000F8B2AD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				4BB21D6E2F0C9E5000F8B2AD /* TimeStop.app */,
+				4BE6410A2F2F65B200B222B0 /* TimeStopWatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,19 +116,42 @@
 				4BB21D6A2F0C9E5000F8B2AD /* Sources */,
 				4BB21D6B2F0C9E5000F8B2AD /* Frameworks */,
 				4BB21D6C2F0C9E5000F8B2AD /* Resources */,
+				4BE641152F2F65B300B222B0 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4BE641132F2F65B300B222B0 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				4BB21D702F0C9E5000F8B2AD /* TimeStop */,
 			);
 			name = TimeStop;
 			packageProductDependencies = (
 			);
 			productName = TimeStop;
 			productReference = 4BB21D6E2F0C9E5000F8B2AD /* TimeStop.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4BE641092F2F65B200B222B0 /* TimeStopWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4BE641182F2F65B300B222B0 /* Build configuration list for PBXNativeTarget "TimeStopWatch Watch App" */;
+			buildPhases = (
+				4BE641062F2F65B200B222B0 /* Sources */,
+				4BE641072F2F65B200B222B0 /* Frameworks */,
+				4BE641082F2F65B200B222B0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4BE6410B2F2F65B200B222B0 /* TimeStopWatch Watch App */,
+			);
+			name = "TimeStopWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "TimeStopWatch Watch App";
+			productReference = 4BE6410A2F2F65B200B222B0 /* TimeStopWatch Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -81,6 +165,9 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					4BB21D6D2F0C9E5000F8B2AD = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					4BE641092F2F65B200B222B0 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -103,6 +190,7 @@
 			projectRoot = "";
 			targets = (
 				4BB21D6D2F0C9E5000F8B2AD /* TimeStop */,
+				4BE641092F2F65B200B222B0 /* TimeStopWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -115,9 +203,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4BE641082F2F65B200B222B0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXSourcesBuildPhase section */
+	/* Begin PBXSourcesBuildPhase section */
 		4BB21D6A2F0C9E5000F8B2AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,7 +220,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXSourcesBuildPhase section */
+		4BE641062F2F65B200B222B0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E8D4A2E2F31F5A000123459 /* HapticsProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+	/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4BE641132F2F65B300B222B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4BE641092F2F65B200B222B0 /* TimeStopWatch Watch App */;
+			targetProxy = 4BE641122F2F65B300B222B0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4BB21D772F0C9E5200F8B2AD /* Debug */ = {
@@ -321,6 +432,72 @@
 			};
 			name = Release;
 		};
+		4BE641162F2F65B300B222B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NZJWJ35U9D;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeStopWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jaesuneo.TimeStop;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaesuneo.TimeStop.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		4BE641172F2F65B300B222B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NZJWJ35U9D;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeStopWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jaesuneo.TimeStop;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaesuneo.TimeStop.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -338,6 +515,15 @@
 			buildConfigurations = (
 				4BB21D7A2F0C9E5200F8B2AD /* Debug */,
 				4BB21D7B2F0C9E5200F8B2AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4BE641182F2F65B300B222B0 /* Build configuration list for PBXNativeTarget "TimeStopWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BE641162F2F65B300B222B0 /* Debug */,
+				4BE641172F2F65B300B222B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
