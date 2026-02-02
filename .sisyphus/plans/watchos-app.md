@@ -513,4 +513,4 @@ xcodebuild -project TimeStop.xcodeproj -scheme "TimeStop Watch App" \
 - [x] iOS ↔ watchOS 세션 동기화 (ConnectivityManager 구현 완료, 실기기 테스트 권장)
 - [x] 컴플리케이션 표시 (TimerComplication.swift 구현 완료, Widget Extension 타겟 수동 설정 필요)
 - [x] 모든 빌드 성공 (iOS + watchOS 모두 BUILD SUCCEEDED)
-- [ ] PR 머지 완료 (PR #8 생성됨, 사용자 리뷰 대기 중)
+- [x] PR 머지 완료 (PR #8 merged to main at commit 20f0b84 - 2026-02-02T05:18:48Z)
