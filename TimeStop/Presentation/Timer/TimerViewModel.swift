@@ -8,22 +8,6 @@
 import SwiftUI
 import Combine
 
-enum TimerState: Equatable {
-    case ready
-    case running
-    case stopped
-}
-
-struct Attempt: Equatable, Identifiable, Hashable {
-    let id: UUID
-    let targetSeconds: Int
-    let actualSeconds: Double
-
-    var difference: Double {
-        actualSeconds - Double(targetSeconds)
-    }
-}
-
 struct TimerViewState: ViewState {
     var targetSeconds: Int
     var timerState: TimerState = .ready
