@@ -251,7 +251,7 @@ Wave 4 (Final):
 
 ---
 
-- [ ] 4. watchOS 앱 타겟 생성
+- [x] 4. watchOS 앱 타겟 생성
 
   **What to do**:
   - Xcode에서 File > New > Target > watchOS > App 선택
@@ -299,7 +299,7 @@ Wave 4 (Final):
 
 ---
 
-- [ ] 5. WatchConnectivityManager 구현
+- [x] 5. WatchConnectivityManager 구현
 
   **What to do**:
   - `/TimeStop/Core/WatchConnectivityManager.swift` 파일 생성
@@ -340,7 +340,7 @@ Wave 4 (Final):
 
 ---
 
-- [ ] 6. watchOS 타이머 UI 구현
+- [x] 6. watchOS 타이머 UI 구현
 
   **What to do**:
   - `/TimeStop Watch App/Views/WatchTimerView.swift` 생성
@@ -386,7 +386,7 @@ Wave 4 (Final):
 
 ---
 
-- [ ] 7. WidgetKit 컴플리케이션 구현
+- [x] 7. WidgetKit 컴플리케이션 구현
 
   **What to do**:
   - watchOS Widget Extension 타겟 추가
