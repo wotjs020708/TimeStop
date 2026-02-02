@@ -87,13 +87,11 @@ struct TimeInputScreen: View {
         .onReceive(viewModel.sideEffect) { effect in
             switch effect {
             case .navigateToTimer(let targetSeconds):
-                let impact = UIImpactFeedbackGenerator(style: .medium)
-                impact.impactOccurred()
+                IOSHapticsProvider().impact(style: .medium)
                 onStart(targetSeconds)
 
             case .triggerHaptic:
-                let impact = UIImpactFeedbackGenerator(style: .light)
-                impact.impactOccurred()
+                IOSHapticsProvider().impact(style: .light)
             }
         }
     }

@@ -27,6 +27,7 @@ enum TimerIntent: ViewIntent {
 
 enum TimerSideEffect: ViewSideEffect {
     case navigateToResults(targetSeconds: Int, attempts: [Attempt])
+    case playHaptic(NotificationType)
 }
 
 @MainActor
@@ -161,8 +162,7 @@ final class TimerViewModel: ViewModel<TimerViewState, TimerIntent, TimerSideEffe
     }
 
     private func finishSession() {
-        let notification = UINotificationFeedbackGenerator()
-        notification.notificationOccurred(.success)
+        emitSideEffect(.playHaptic(.success))
 
         emitSideEffect(.navigateToResults(
             targetSeconds: state.targetSeconds,

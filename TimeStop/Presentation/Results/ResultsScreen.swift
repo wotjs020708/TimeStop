@@ -115,8 +115,7 @@ struct ResultsScreen: View {
 
             // Go home button
             Button {
-                let impact = UIImpactFeedbackGenerator(style: .medium)
-                impact.impactOccurred()
+                IOSHapticsProvider().impact(style: .medium)
                 viewModel.send(.tryAgainTapped)
             } label: {
                 HStack(spacing: 12) {
